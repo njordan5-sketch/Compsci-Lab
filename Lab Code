@@ -280,7 +280,7 @@ int main() {
  
     
 
-    *if (isMember == 1) {
+    if (isMember == 1) {
         cout << left << setw(20) << "Yes\n";
     } else {
    cout << left << setw(20) << "No\n";
