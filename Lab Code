@@ -1,0 +1,314 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    string foodName, cashierNotes, taxOption;
+
+    // item code is character
+    char itemCode, itemSize;
+
+    int itemQuantity;
+
+    double discount = 0.1, unitPrice;
+   
+
+    bool isMember;
+
+    int spacer = 20;
+
+    // item options
+    char A = 'A', B = 'B', C = 'C', D = 'D', E = 'E', F = 'F', G = 'G', H = 'H', tipOffer;
+
+    string item_one = "A. Lemon Energizer",
+        item_two = "B. Cold Brew",
+        item_three = "C. Vanilla Latte",
+        item_four = "D. Iced Macchiato",
+        item_1 = "Lemon Energizer",
+        item_2 = "Cold Brew",
+        item_3 = "Vanilla Latte",
+        item_4 = "Iced Macchiato";
+
+    double price_one = 4.50,
+        price_two = 3.00,
+        price_three = 4.00,
+        price_four = 4.00;
+
+    double med_size = 1.00,
+        large_size = 2.00;
+
+// tax options
+    double arkansas = 0.065;
+    double faulkner = 0.05;
+    double   conway = 0.02125;
+
+// Tip info
+    double tipOneE = .15,
+            tipTwoF = .20,
+            tipThreeG = .25,
+            tipFourH;
+    
+    string tipE = "E. 15%",
+        tipF = "F. 20%",
+        tipG = "G. 25%",
+        tipH = "H. Other";
+    
+    cout << left << setw(spacer) << "Drink"
+        << setw(spacer) << "Small"
+        << setw(spacer) << "Medium"
+        << setw(spacer) << "Large\n" << endl;
+
+    cout << left << setw(spacer) << item_one
+        << setw(spacer) << fixed << setprecision(2) << price_one
+        << setw(spacer) << fixed << setprecision(2) << price_one + med_size
+        << setw(spacer) << fixed << setprecision(2) << price_one + large_size
+        << endl;
+
+    cout << left << setw(spacer) << item_two
+        << setw(spacer) << fixed << setprecision(2) << price_two
+        << setw(spacer) << fixed << setprecision(2) << price_two + med_size
+        << setw(spacer) << fixed << setprecision(2) << price_two + large_size
+        << endl;
+    cout << left << setw(spacer) << item_three
+        << setw(spacer) << fixed << setprecision(2) << price_three
+        << setw(spacer) << fixed << setprecision(2) << price_three + med_size
+        << setw(spacer) << fixed << setprecision(2) << price_three + large_size
+        << endl;
+
+    cout << left << setw(spacer) << item_four
+        << setw(spacer) << fixed << setprecision(2) << price_four
+        << setw(spacer) << fixed << setprecision(2) << price_four + med_size
+        << setw(spacer) << fixed << setprecision(2) << price_four + large_size
+        << setw(spacer) << endl;
+
+    cout << "Enter in an item code (one character only): " << endl;
+    cin >> itemCode;
+    // maybe have error cases if the user doesnt input the correct stuff
+    cout << "Enter in a size (S, M, L): " << endl;
+    cin >> itemSize;
+    cout << "Enter in a quantity: " << endl;
+    cin >> itemQuantity;
+    cout << "Membership Active: (1/0)" << 
+    endl;
+    cin >> isMember; 
+    
+    
+   
+    // receipt start
+
+    cout << "\n" << "Receipt\n----------------------------------------------------------------------------------------------------\n"
+        << left << setw(20) << "Name"
+        << setw(20) << "Item Code"
+        << setw(20) << "Quantity"
+        << setw(20) << "Unit Price"
+        << setw(20) << "Subtotal\n" << endl;
+
+    
+
+    // to determine the user input
+    if (isMember == 1) {
+        if (itemCode == 'A' || itemCode == 'a') {
+        if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_one * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_one * itemQuantity);
+                cout << right << setw(20) << fixed << setprecision(2) << unitPrice << endl;
+            
+        } else if (itemSize == 'M' || itemSize == 'm') {
+            unitPrice = ((price_one + med_size) * itemQuantity) * (1 - discount);
+            cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << ((price_one + med_size) * itemQuantity);
+            cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+        } else if (itemSize == 'L' || itemSize == 'l') {
+            unitPrice = ((price_one + large_size) * itemQuantity) * (1 - discount);
+            cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' <<((price_one + large_size) * itemQuantity);
+            cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+        } 
+        } else if (itemCode == 'B' || itemCode == 'b') {
+            if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_two * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two * itemQuantity);
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+            } else if (itemSize == 'M' || itemSize == 'm') {
+                unitPrice = ((price_two + med_size ) * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + med_size ) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                
+            } else if (itemSize == 'L' || itemSize == 'l') {
+                unitPrice = ((price_two + large_size) * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + large_size ) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                
+            } 
+            
+        } else if (itemCode == 'C' || itemCode == 'c') {
+            if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_three * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_three * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                
+            } else if (itemSize == 'M' || itemSize == 'm') {
+                unitPrice = ((price_three + med_size) * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + med_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+
+            } else if (itemSize == 'L' || itemSize == 'l') {
+                unitPrice = ((price_three + large_size) * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + large_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                
+            } 
+            
+        } else if (itemCode == 'D' || itemCode == 'd') {
+            if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_four * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_four * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                
+            } else if (itemSize == 'M' || itemSize == 'm') {
+                unitPrice = ((price_four + med_size) * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + med_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+            } else if (itemSize == 'L' || itemSize == 'l') {
+                unitPrice = ((price_four + large_size) * itemQuantity) * (1 - discount);
+                cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + large_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                
+            } 
+        } 
+    } else {
+
+        if (itemCode == 'A' || itemCode == 'a') {
+        if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_one * itemQuantity);
+                cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_one * itemQuantity);
+                cout << right << setw(20) << fixed << setprecision(2) << unitPrice << endl;
+            
+        } else if (itemSize == 'M' || itemSize == 'm') {
+            unitPrice = ((price_one + med_size) * itemQuantity);
+            cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << ((price_one + med_size) * itemQuantity);
+            cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+        } else if (itemSize == 'L' || itemSize == 'l') {
+            unitPrice = ((price_one + large_size) * itemQuantity);
+            cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' <<((price_one + large_size) * itemQuantity);
+            cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+        } 
+        } else if (itemCode == 'B' || itemCode == 'b') {
+            if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_two * itemQuantity);
+                cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two * itemQuantity);
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+            } else if (itemSize == 'M' || itemSize == 'm') {
+                unitPrice = ((price_two + med_size ) * itemQuantity);
+                cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + med_size ) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                
+            } else if (itemSize == 'L' || itemSize == 'l') {
+                unitPrice = ((price_two + large_size) * itemQuantity);
+                cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + large_size ) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                
+            } 
+            
+        } else if (itemCode == 'C' || itemCode == 'c') {
+            if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_three * itemQuantity);
+                cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_three * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                
+            } else if (itemSize == 'M' || itemSize == 'm') {
+                unitPrice = ((price_three + med_size) * itemQuantity);
+                cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + med_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+
+            } else if (itemSize == 'L' || itemSize == 'l') {
+                unitPrice = ((price_three + large_size) * itemQuantity);
+                cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + large_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                
+            } 
+            
+        } else if (itemCode == 'D' || itemCode == 'd') {
+            if (itemSize == 'S' || itemSize == 's') {
+                unitPrice = (price_four * itemQuantity);
+                cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_four * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                
+            } else if (itemSize == 'M' || itemSize == 'm') {
+                unitPrice = ((price_four + med_size) * itemQuantity);
+                cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + med_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+            } else if (itemSize == 'L' || itemSize == 'l') {
+                unitPrice = ((price_four + large_size) * itemQuantity);
+                cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + large_size) * itemQuantity;
+                cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                
+            } 
+        } 
+        
+    } 
+        cout << "\n" << "Receipt\n----------------------------------------------------------------------------------------------------\n";
+     cout << left << setw(spacer) << "Arkansas State Tax "<< setw(spacer)<< "6.5%" << setprecision(2) << "$" << unitPrice * .065 << endl;
+    cout << left << setw(spacer) << "Faulkner County Tax" << setw(spacer) <<".5%" << fixed << setprecision(2) <<  "$" << unitPrice * .005 << endl;
+    cout << left << setw(spacer) << "Conway Municipal Tax " << setw(spacer) << "2.125%"  << fixed << setprecision(2) << "$" << unitPrice * .02125 << endl;
+    
+        cout << left << setw(spacer) << "Tip" << setw(spacer) << "Amount" << endl;
+    cout << left << setw(spacer) << tipE << setw(spacer) << fixed << setprecision(2) << unitPrice * .15 << endl;
+    cout << left << setw(spacer) << tipF << setw(spacer) << fixed << setprecision(2) << unitPrice * .20 << endl;
+    cout << left << setw(spacer) << tipG<< setw(spacer) << fixed << setprecision(2) << unitPrice * .25 << endl;
+    cout << left << setw(spacer) << tipH << setw(spacer) << fixed << setprecision(2) << "other" << endl;
+    
+    cout << "Pick a tip amount" << endl;
+    cin >> tipOffer;
+    
+     {   if  (tipOffer == 'E' || tipOffer == 'e') {
+            cout << "Your total is " << ((unitPrice * tipOneE) + (unitPrice) +(unitPrice * .065) +(unitPrice * .005) +(unitPrice * .02125) ) << endl;
+        } else if (tipOffer == 'F' || tipOffer == 'f') {
+            cout << "Your total is " << ((unitPrice * tipTwoF) + (unitPrice) +(unitPrice * .065) +(unitPrice * .005) +(unitPrice * .02125) ) << endl;
+            
+        } else if (tipOffer == 'G' || tipOffer == 'g') {
+            cout << "Your total is " << ((unitPrice * tipThreeG) + (unitPrice) +(unitPrice * .065) +(unitPrice * .005) +(unitPrice * .02125) ) << endl;
+        } else if (tipOffer == 'H' || tipOffer =='h') {
+            cout << "manually put in tip amount" << endl;
+            cin >> tipFourH;
+            cout << "Your total is " << ((tipFourH) + (unitPrice) +(unitPrice * .065) +(unitPrice * .005) +(unitPrice * .02125) ) << endl;
+        }
+     }
+   
+ 
+ 
+    
+
+    *if (isMember == 1) {
+        cout << left << setw(20) << "Yes\n";
+    } else {
+   cout << left << setw(20) << "No\n";
+   }
+
+    // receipt end
+    
+
+
+
+    
+    cout << "\nEnter Cashier Notes: ";
+    cin.ignore();
+    getline(cin, cashierNotes);
+    cout << "\n" << left << 
+"Audit\n--------------------------------------------------------" << endl;
+
+    cout << left << setw(15) << "Name"
+        << setw(15) << "Item"
+        << setw(15) << "Quantity"
+        << setw(15) << "Unit Price"
+        << setw(15) << "Discount\n" << endl;
+
+    cout << left << setw(15) << foodName
+    << setw(15) << itemCode
+    << setw(15) << itemQuantity
+    << "$" << setw(14) << fixed << setprecision(2) << unitPrice
+    << setw(15) << (isMember ? "Yes" : "No") << "\n";
+    
+    return 0;
+}
