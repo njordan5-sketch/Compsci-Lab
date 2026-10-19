@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <vector>
 #include <sstream>
+#include <fstream>
 
 using namespace std;
 
@@ -10,11 +11,30 @@ int main() {
     double grandTotalSales = 0;
     int totalCustomers = 0;
     string anotherCustomer = "yes";
+    int originalDrink1Sm = 50, originalDrink1Md = 50, originalDrink1Lg = 50;
+    int originalDrink2Sm = 50, originalDrink2Md = 50, originalDrink2Lg = 50;
+    int originalDrink3Sm = 50, originalDrink3Md = 50, originalDrink3Lg = 50;
+    int originalDrink4Sm = 50, originalDrink4Md = 50, originalDrink4Lg = 50;
+
+    int soldDrink1Sm = 0, soldDrink1Md = 0, soldDrink1Lg = 0;
+    int soldDrink2Sm = 0, soldDrink2Md = 0, soldDrink2Lg = 0;
+    int soldDrink3Sm = 0, soldDrink3Md = 0, soldDrink3Lg = 0;
+    int soldDrink4Sm = 0, soldDrink4Md = 0, soldDrink4Lg = 0;
+
+string inventoryDrink1, inventoryDrink2;
+string inventoryDrink3, inventoryDrink4;
+
+    ofstream receiptFile ("receipt.txt");
+    if (!receiptFile.is_open()) {
+    cerr << "Error: Could not open receipt.txt.\n";
+    return 1;
+}
+
 
     while (anotherCustomer == "yes" || anotherCustomer == "Yes" ||
            anotherCustomer == "y" || anotherCustomer == "Y") {
 
-    string foodName, cashierNotes, taxOption;
+    string foodName, cashierNotes, taxOption, menuOption;
 
 
     vector<string> fullOrder;
@@ -48,12 +68,25 @@ int main() {
         tipOffer,
         fullString = "",
         x = "";
+        double
+        drink1Sm = 0,
+        drink1Md = 0,
+        drink1Lg = 0,
+        drink2Sm = 0,
+        drink2Md = 0,
+        drink2Lg = 0,
+        drink3Sm = 0,
+        drink3Md = 0,
+        drink3Lg = 0,
+        drink4Sm = 0,
+        drink4Md = 0,
+        drink4Lg = 0;
     
 
     double price_one = 4.50,
         price_two = 3.00,
         price_three = 4.00,
-        counter = 1,
+        orderCounter = 1,
         price_four = 4.00;
 
     double med_size = 1.00,
@@ -74,7 +107,58 @@ int main() {
         tipF = "F. 20%",
         tipG = "G. 25%",
         tipH = "H. Other";
-    
+
+
+    int counter = 0; 
+
+    ifstream MyReadFile("MenuOptions.txt");
+    if (!MyReadFile.is_open()) {
+        cerr << "Error: Could not open MenuOptions.txt.\n";
+        return 1;
+    }
+     while (getline (MyReadFile, menuOption)) {
+        if (counter == 0) {
+            item_one = menuOption;
+        } else if (counter == 1) {
+            drink1Sm = stod(menuOption);
+        } else if (counter == 2) {
+            drink1Md = stod(menuOption)+ med_size;
+        } else if (counter == 3) {
+            drink1Lg = stod(menuOption)+ large_size;
+        }if (counter == 4) {
+            item_two = menuOption;
+        } else if (counter == 5) {
+            drink2Sm = stod(menuOption);
+        } else if (counter == 6) {
+            drink2Md = stod(menuOption)+ med_size;
+        } else if (counter == 7) {
+            drink2Lg = stod(menuOption)+ large_size;
+        } else if (counter == 8) {
+            item_three = menuOption;
+        }else if (counter == 9) {
+            drink3Sm = stod(menuOption);
+        } else if (counter == 10) {
+            drink3Md = stod(menuOption)+ med_size;
+        } else if (counter == 11) {
+            drink3Lg = stod(menuOption)+ large_size;
+        } else if (counter == 12){
+            item_four = menuOption;
+        } else if (counter == 13) {
+            drink4Sm = stod(menuOption);
+        } else if (counter == 14) {
+            drink4Md = stod(menuOption)+ med_size;
+        } else if (counter == 15) {
+            drink4Lg = stod(menuOption)+ large_size;
+        }
+        counter++;
+    }
+
+inventoryDrink1 = item_one;
+inventoryDrink2 = item_two;
+inventoryDrink3 = item_three;
+inventoryDrink4 = item_four;
+
+
     cout << left << setw(spacer) << "Drink"
         << setw(spacer) << "Small"
         << setw(spacer) << "Medium"
@@ -103,11 +187,12 @@ int main() {
         << setw(spacer) << fixed << setprecision(2) << price_four + large_size
         << setw(spacer) << endl;
 
+
     cout << "\nEnter in your name: " << endl;
     cin >> userName;
 
     while (x != "Checkout" && x != "checkout") {
-        if (counter == 1) {
+        if (orderCounter == 1) {
             cout << "Enter in an item code (one character only): " << endl;
             cin >> itemCode;
             if (itemCode != "A" && itemCode != "a" && itemCode != "B" && itemCode != "b" && itemCode != "C" && itemCode != "c" && itemCode != "D" && itemCode != "d") {
@@ -124,8 +209,8 @@ int main() {
                 fullString = fullString + item_four + ",";
             }
             
-            counter++;
-        } else if (counter == 2) {
+            orderCounter++;
+        } else if (orderCounter == 2) {
             cout << "Enter in a size (S, M, L): " << endl;
             cin >> itemSize;
             if (itemSize != "S" && itemSize != "s" && itemSize != "M" && itemSize != "m" && itemSize != "L" && itemSize != "l") {
@@ -141,8 +226,8 @@ int main() {
             }
     
            
-            counter++;
-        } else if (counter == 3) {
+            orderCounter++;
+        } else if (orderCounter == 3) {
             cout << "Enter in a quantity: " << endl;
             cin >> itemQuantity;
             if (itemQuantity <= 0 || cin.fail()) {
@@ -154,9 +239,9 @@ int main() {
             }
             //fullOrder.push_back(to_string(itemQuantity));
             fullString = fullString + to_string(itemQuantity) + ",";
-            counter++;
-        } else if (counter == 4) {
-            counter = 1;
+            orderCounter++;
+        } else if (orderCounter == 4) {
+            orderCounter = 1;
             cout << "Do you want to checkout or add another item? (Enter 'checkout' to finish or any other key to continue): " << endl;
             cin >> x;
         } 
@@ -183,11 +268,55 @@ int main() {
         fullOrder.push_back(word);
         cout << word << endl;
     }
-    
-    
 
+    /*
+    int counter = 0; 
 
-    
+    ifstream MyReadFile("MenuOptions.txt");
+     while (getline (MyReadFile, menuOption)) {
+        if (counter == 0) {
+            item_one = menuOption;
+        } else if (counter == 1) {
+            drink1Sm = stod(menuOption);
+        } else if (counter == 2) {
+            drink1Md = stod(menuOption)+ med_size;
+        } else if (counter == 3) {
+            drink1Lg = stod(menuOption)+ large_size;
+        }if (counter == 4) {
+            item_two = menuOption;
+        } else if (counter == 5) {
+            drink2Sm = stod(menuOption);
+        } else if (counter == 6) {
+            drink2Md = stod(menuOption)+ med_size;
+        } else if (counter == 7) {
+            drink2Lg = stod(menuOption)+ large_size;
+        } else if (counter == 8) {
+            item_three = menuOption;
+        }else if (counter == 9) {
+            drink3Sm = stod(menuOption);
+        } else if (counter == 10) {
+            drink3Md = stod(menuOption)+ med_size;
+        } else if (counter == 11) {
+            drink3Lg = stod(menuOption)+ large_size;
+        } else if (counter == 12){
+            item_four = menuOption;
+        } else if (counter == 13) {
+            drink4Sm = stod(menuOption);
+        } else if (counter == 14) {
+            drink4Md = stod(menuOption)+ med_size;
+        } else if (counter == 15) {
+            drink4Lg = stod(menuOption)+ large_size;
+        }
+        counter++;
+    }
+    */
+
+     if (receiptFile.is_open ()){
+    receiptFile << "\n\n========================================\n";
+    receiptFile << "Customer #" << totalCustomers + 1 << endl;
+    receiptFile << "Customer name: " << userName << endl;
+    receiptFile << "========================================\n";
+
     // receipt start
 
     cout << "\n" << "Receipt\n----------------------------------------------------------------------------------------------------\n"
@@ -197,6 +326,12 @@ int main() {
         << setw(20) << "Unit Price"
         << setw(20) << "Subtotal\n" << endl;
 
+    receiptFile << "\n" << "Receipt\n----------------------------------------------------------------------------------------------------\n"
+        << left << setw(20) << "Name"
+        << setw(20) << "Item Code"
+        << setw(20) << "Quantity"
+        << setw(20) << "Unit Price"
+        << setw(20) << "Subtotal\n" << endl;
 
 
     
@@ -205,40 +340,86 @@ int main() {
         itemCode = fullOrder[i];
         itemSize = fullOrder[i + 1];
         itemQuantity = stoi(fullOrder[i + 2]);
-    
-
         i += 2; 
+
+if (itemCode == item_one) {
+    if (itemSize == "Small" || itemSize == "small") {
+        soldDrink1Sm += itemQuantity;
+    } else if (itemSize == "Medium" || itemSize == "medium") {
+        soldDrink1Md += itemQuantity;
+    } else if (itemSize == "Large" || itemSize == "large") {
+        soldDrink1Lg += itemQuantity;
+    }
+} else if (itemCode == item_two) {
+    if (itemSize == "Small" || itemSize == "small") {
+        soldDrink2Sm += itemQuantity;
+    } else if (itemSize == "Medium" || itemSize == "medium") {
+        soldDrink2Md += itemQuantity;
+    } else if (itemSize == "Large" || itemSize == "large") {
+        soldDrink2Lg += itemQuantity;
+    }
+} else if (itemCode == item_three) {
+    if (itemSize == "Small" || itemSize == "small") {
+        soldDrink3Sm += itemQuantity;
+    } else if (itemSize == "Medium" || itemSize == "medium") {
+        soldDrink3Md += itemQuantity;
+    } else if (itemSize == "Large" || itemSize == "large") {
+        soldDrink3Lg += itemQuantity;
+    }
+} else if (itemCode == item_four) {
+    if (itemSize == "Small" || itemSize == "small") {
+        soldDrink4Sm += itemQuantity;
+    } else if (itemSize == "Medium" || itemSize == "medium") {
+        soldDrink4Md += itemQuantity;
+    } else if (itemSize == "Large" || itemSize == "large") {
+        soldDrink4Lg += itemQuantity;
+    }
+}
+ 
+    
 
         if (isMember == 1) {
             if (itemCode == item_one) {
                 if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_one * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_one * itemQuantity);
+                    receiptFile << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_one * itemQuantity);
                     cout << right << setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right << setw(20) << fixed << setprecision(2) << unitPrice << endl;
                     //fullString = item_one + " " + itemSize + " " + itemQuantity + " " + unitPrice + " "
                 } else if (itemSize == "Medium" || itemSize == "medium") {
                     unitPrice = ((price_one + med_size) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << ((price_one + med_size) * itemQuantity);
+                    receiptFile << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << ((price_one + med_size) * itemQuantity);
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right << setw(20) << fixed << setprecision(2) << unitPrice << endl;
                 } else if (itemSize == "Large" || itemSize == "large") {
                     unitPrice = ((price_one + large_size) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' <<((price_one + large_size) * itemQuantity);
+                    receiptFile << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' <<((price_one + large_size) * itemQuantity);
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile <<  right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
                 } 
             } else if (itemCode == item_two) {
                 if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_two * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two * itemQuantity);
+                     receiptFile << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two * itemQuantity);
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                 } else if (itemSize == "Medium" || itemSize == "medium") {
                     unitPrice = ((price_two + med_size ) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + med_size ) * itemQuantity;
+                    receiptFile << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + med_size ) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
                     
                 } else if (itemSize == "Large" || itemSize == "large") {
                     unitPrice = ((price_two + large_size) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + large_size ) * itemQuantity;
+                    receiptFile << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + large_size ) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
                     
                 } 
                 
@@ -246,17 +427,23 @@ int main() {
                 if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_three * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_three * itemQuantity;
+                    receiptFile << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_three * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
                     
                 } else if (itemSize == "Medium" || itemSize == "medium") {
                     unitPrice = ((price_three + med_size) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + med_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + med_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
 
                 } else if (itemSize == "Large" || itemSize == "large") {
                     unitPrice = ((price_three + large_size) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + large_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + large_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                     
                 } 
                 
@@ -264,16 +451,22 @@ int main() {
                 if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_four * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_four * itemQuantity;
+                    receiptFile << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_four * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile  << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                     
                 } else if (itemSize == "Medium" || itemSize == "medium") {
                     unitPrice = ((price_four + med_size) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + med_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + med_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                 } else if (itemSize == "Large" || itemSize == "large") {
                     unitPrice = ((price_four + large_size) * itemQuantity) * (1 - discount);
                     cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + large_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + large_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                     
                 } 
             } 
@@ -283,31 +476,43 @@ int main() {
             if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_one * itemQuantity);
                     cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_one * itemQuantity);
+                    receiptFile << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_one * itemQuantity);
                     cout << right << setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right << setw(20) << fixed << setprecision(2) << unitPrice << endl;
                 
             } else if (itemSize == "Medium" || itemSize == "medium") {
                 unitPrice = ((price_one + med_size) * itemQuantity);
                 cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << ((price_one + med_size) * itemQuantity);
+                receiptFile << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << ((price_one + med_size) * itemQuantity);
                 cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
             } else if (itemSize == "Large" || itemSize == "large") {
                 unitPrice = ((price_one + large_size) * itemQuantity);
                 cout << left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' <<((price_one + large_size) * itemQuantity);
+                receiptFile <<  left << setw(20) << item_1 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' <<((price_one + large_size) * itemQuantity);
                 cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
             } 
             } else if (itemCode == item_two) {
                 if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_two * itemQuantity);
                     cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two * itemQuantity);
+                    receiptFile << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two * itemQuantity);
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                 } else if (itemSize == "Medium" || itemSize == "medium") {
                     unitPrice = ((price_two + med_size ) * itemQuantity);
                     cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + med_size ) * itemQuantity;
+                    receiptFile << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + med_size ) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
                     
                 } else if (itemSize == "Large" || itemSize == "large") {
                     unitPrice = ((price_two + large_size) * itemQuantity);
                     cout << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + large_size ) * itemQuantity;
+                    receiptFile << left << setw(20) << item_2 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_two + large_size ) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
                     
                 } 
                 
@@ -315,17 +520,23 @@ int main() {
                 if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_three * itemQuantity);
                     cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_three * itemQuantity;
+                    receiptFile << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_three * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
                     
                 } else if (itemSize == "Medium" || itemSize == "medium") {
                     unitPrice = ((price_three + med_size) * itemQuantity);
                     cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + med_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + med_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2) << unitPrice << endl;
 
                 } else if (itemSize == "Large" || itemSize == "large") {
                     unitPrice = ((price_three + large_size) * itemQuantity);
                     cout << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + large_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_3 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_three + large_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                     
                 } 
                 
@@ -333,16 +544,21 @@ int main() {
                 if (itemSize == "Small" || itemSize == "small") {
                     unitPrice = (price_four * itemQuantity);
                     cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_four * itemQuantity;
+                    receiptFile << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << price_four * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
-                    
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                 } else if (itemSize == "Medium" || itemSize == "medium") {
                     unitPrice = ((price_four + med_size) * itemQuantity);
                     cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + med_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + med_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                 } else if (itemSize == "Large" || itemSize == "large") {
                     unitPrice = ((price_four + large_size) * itemQuantity);
                     cout << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + large_size) * itemQuantity;
+                    receiptFile << left << setw(20) << item_4 << setw(20) << itemCode << setw(20) << itemQuantity << fixed << setprecision(2) << '$' << (price_four + large_size) * itemQuantity;
                     cout << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
+                    receiptFile << right<< setw(20) << fixed << setprecision(2)<< unitPrice << endl;
                     
                 } 
             } 
@@ -381,6 +597,7 @@ int main() {
                 + (unitPrice * .02125);
 
             cout << "Your total is " << totalOrder << endl;
+            receiptFile << "Your total is " << totalOrder << endl;
 
         } else if (tipOffer == "F" || tipOffer == "f") {
             totalOrder = (unitPrice * tipTwoF) + unitPrice
@@ -388,13 +605,14 @@ int main() {
                 + (unitPrice * .02125);
 
             cout << "Your total is " << totalOrder << endl;
-
+            receiptFile << "Your total is " << totalOrder << endl;
         } else if (tipOffer == "G" || tipOffer == "g") {
             totalOrder = (unitPrice * tipThreeG) + unitPrice
                 + (unitPrice * .065) + (unitPrice * .005)
                 + (unitPrice * .02125);
 
             cout << "Your total is " << totalOrder << endl;
+            receiptFile << "Your total is " << totalOrder << endl;
 
         } else if (tipOffer == "H" || tipOffer == "h") {
             cout << "manually put in tip amount" << endl;
@@ -412,6 +630,7 @@ int main() {
                 + (unitPrice * .02125);
 
             cout << "Your total is " << totalOrder << endl;
+            receiptFile << "Your total is " << totalOrder << endl;
         }
     }
    
@@ -421,8 +640,10 @@ int main() {
 
  if (isMember == 1) {
         cout << left << setw(20) << "Yes is a member\n";
+        receiptFile << left << setw(20) << "Yes is a member\n";
  } else {
    cout << left << setw(20) << "Not a member\n";
+   receiptFile << left << setw(20) << "Not a member\n";
    }
 
     // receipt end
@@ -433,13 +654,15 @@ int loyaltyPoints = static_cast<int>(totalOrder / 3);
 
     for (int i = 0; i < loyaltyPoints; i++) {
         cout << "*";
+        receiptFile << "*";
     }
 
     cout << endl;
 
     grandTotalSales = grandTotalSales + totalOrder;
     totalCustomers++;
-
+    receiptFile << "\n------------ End of receipt ------------\n";
+    receiptFile.flush();
     cout << "\nIs there another customer? (yes/no): ";
     cin >> anotherCustomer;
 
@@ -457,9 +680,113 @@ int loyaltyPoints = static_cast<int>(totalOrder / 3);
     cout << "\nDaily Sales Summary\n";
     cout << "--------------------------------------------------------\n";
     cout << "Total Customers: " << totalCustomers << endl;
-    cout << "Total Sales: $" << fixed << setprecision(2)
-        << grandTotalSales << endl;
+    cout << "Total Sales: $" << fixed << setprecision(2) << grandTotalSales << endl;
 
-    
-    return 0;
+    receiptFile << "\nDaily Sales Summary\n";
+    receiptFile << "--------------------------------------------------------\n";
+    receiptFile << "Total Customers: " << totalCustomers << endl;
+    receiptFile << "Total Sales: $" << fixed << setprecision(2) << grandTotalSales << endl;
 }
+ofstream inventoryFile("inventory.txt");
+if (!inventoryFile.is_open()) {
+    cerr << "Error: Could not open inventory.txt.\n";
+} else {
+    inventoryFile << "Daily Inventory\n";
+    inventoryFile << "-----------------------------------------------\n";
+
+    inventoryFile << left
+                  << setw(35) << "Item"
+                  << setw(15) << "Original"
+                  << setw(15) << "Change"
+                  << setw(15) << "Remaining" << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink1 + " Small"
+                  << setw(15) << originalDrink1Sm
+                  << setw(15) << -soldDrink1Sm
+                  << setw(15) << originalDrink1Sm - soldDrink1Sm
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink1 + " Medium"
+                  << setw(15) << originalDrink1Md
+                  << setw(15) << -soldDrink1Md
+                  << setw(15) << originalDrink1Md - soldDrink1Md
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink1 + " Large"
+                  << setw(15) << originalDrink1Lg
+                  << setw(15) << -soldDrink1Lg
+                  << setw(15) << originalDrink1Lg - soldDrink1Lg
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink2 + " Small"
+                  << setw(15) << originalDrink2Sm
+                  << setw(15) << -soldDrink2Sm
+                  << setw(15) << originalDrink2Sm - soldDrink2Sm
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink2 + " Medium"
+                  << setw(15) << originalDrink2Md
+                  << setw(15) << -soldDrink2Md
+                  << setw(15) << originalDrink2Md - soldDrink2Md
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink2 + " Large"
+                  << setw(15) << originalDrink2Lg
+                  << setw(15) << -soldDrink2Lg
+                  << setw(15) << originalDrink2Lg - soldDrink2Lg
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink3 + " Small"
+                  << setw(15) << originalDrink3Sm
+                  << setw(15) << -soldDrink3Sm
+                  << setw(15) << originalDrink3Sm - soldDrink3Sm
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink3 + " Medium"
+                  << setw(15) << originalDrink3Md
+                  << setw(15) << -soldDrink3Md
+                  << setw(15) << originalDrink3Md - soldDrink3Md
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink3 + " Large"
+                  << setw(15) << originalDrink3Lg
+                  << setw(15) << -soldDrink3Lg
+                  << setw(15) << originalDrink3Lg - soldDrink3Lg
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink4 + " Small"
+                  << setw(15) << originalDrink4Sm
+                  << setw(15) << -soldDrink4Sm
+                  << setw(15) << originalDrink4Sm - soldDrink4Sm
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink4 + " Medium"
+                  << setw(15) << originalDrink4Md
+                  << setw(15) << -soldDrink4Md
+                  << setw(15) << originalDrink4Md - soldDrink4Md
+                  << endl;
+
+    inventoryFile << left
+                  << setw(35) << inventoryDrink4 + " Large"
+                  << setw(15) << originalDrink4Lg
+                  << setw(15) << -soldDrink4Lg
+                  << setw(15) << originalDrink4Lg - soldDrink4Lg
+                  << endl;
+
+    inventoryFile.close();
+}
+    receiptFile.close();
+return 0;
+}
+
